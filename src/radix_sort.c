@@ -160,7 +160,7 @@ static void sort_five(t_list **stack_a)
     push_b(stack_a, &stack_b);  // Mover el más pequeño a B
 
     // Mover el segundo número más pequeño a la pila B
-    i = 0;  // Reiniciar el índice
+    i = 0;
     while (*(int *)(*stack_a)->content != second_smallest)
     {
         if (i++ < size / 2)
