@@ -14,20 +14,6 @@
 #include <stdio.h>
 
 
-// Función para ordenar listas de tamaño 2
-static void sort_two(t_list **stack_a)
-{
-    if (*(int *)(*stack_a)->content > *(int *)(*stack_a)->next->content)
-    {
-        // Intercambiar los dos elementos
-        t_list *tmp = *stack_a;
-        *stack_a = (*stack_a)->next;
-        tmp->next = (*stack_a)->next;
-        (*stack_a)->next = tmp;
-        printf("sa\n");
-    }
-}
-
 // Función para ordenar listas de tamaño 3
 static int get_max_num(t_list *stack)
 {
