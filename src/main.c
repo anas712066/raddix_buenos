@@ -12,28 +12,25 @@
 
 #include "../includes/push_swap.h"
 
-static void radix_sort(t_list **stack_a)
+int main(int argc, char **argv)
 {
-    t_list *stack_b = NULL;
-    int max_num = get_max_num(*stack_a);
-    int max_bits = get_max_bits(max_num);
-    int i = 0;
+    t_list *stack_a = NULL;
 
-    while (i < max_bits)
+    if (argc < 2)
+        return (0);
+
+    // Parsear los argumentos y llenar la pila A
+    stack_a = parse_arguments(argc, argv);
+    if (!stack_a)
     {
-        int j = 0;
-        while (j < ft_lstsize(*stack_a))
-        {
-            if (((*(int *)(*stack_a)->content >> i) & 1) == 1)
-                rotate_a(stack_a);
-            else
-                push_b(stack_a, &stack_b);
-            j++;
-        }
-
-        while (stack_b)
-            push_a(stack_a, &stack_b);
-
-        i++;
+        ft_putstr_fd("Error\n", 2);
+        return (1);
     }
+
+    // Ordenar la pila
+    sort_stack(&stack_a);
+
+    // Liberar la memoria
+    ft_lstclear(&stack_a, free);
+    return (0);
 }
