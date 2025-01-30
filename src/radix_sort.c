@@ -131,24 +131,26 @@ void	sort_three(t_list **stack_a)
 	}
 }
 
-void	sort_five(t_list **stack_a)
+void sort_five(t_list **stack_a, t_list **stack_b)
 {
-	t_list	*stack_b;
-	int		smallest;
-	int		second_smallest;
+    int smallest = smallest_number(*stack_a);
+    int second_smallest = second_smallest_number(*stack_a, smallest);
 
-	stack_b = NULL;
-	smallest = smallest_number(*stack_a);
-	second_smallest = second_smallest_number(*stack_a, smallest);
-	while (*(int *)(*stack_a)->content != smallest)
-		rotate_a(stack_a);
-	push_b(stack_a, &stack_b);
-	while (*(int *)(*stack_a)->content != second_smallest)
-		rotate_a(stack_a);
-	push_b(stack_a, &stack_b);
-	sort_three(stack_a);
-	push_a(stack_a, &stack_b);
-	push_a(stack_a, &stack_b);
+    // Push the two smallest numbers to stack_b
+    while (ft_lstsize(*stack_a) > 3)
+    {
+        if (*(int *)(*stack_a)->content == smallest || *(int *)(*stack_a)->content == second_smallest)
+            push_b(stack_a, stack_b);
+        else
+            rotate_a(stack_a);
+    }
+
+    // Sort the remaining three numbers in stack_a
+    sort_three(stack_a);
+
+    // Push the two smallest numbers back to stack_a
+    while (*stack_b)
+        push_a(stack_a, stack_b);
 }
 
 void	radix_sort(t_list **stack_a)
