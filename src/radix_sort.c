@@ -112,25 +112,25 @@ static void sort_three(t_list **stack_a)
 
     if (a > b && b > c)
     {
-        printf("sa\n");  // Intercambiar a y b
-        printf("rra\n"); // Rotar inversamente a
+        swap_a(stack_a);  // Intercambiar a y b
+        reverse_rotate_a(stack_a); // Rotar inversamente a
     }
     else if (a > c && c > b)
     {
-        printf("ra\n");  // Rotar a
+        rotate_a(stack_a);  // Rotar a
     }
     else if (b > a && a > c)
     {
-        printf("rra\n"); // Rotar inversamente a
+        reverse_rotate_a(stack_a); // Rotar inversamente a
     }
     else if (b > c && c > a)
     {
-        printf("sa\n");  // Intercambiar a y b
+        swap_a(stack_a);  // Intercambiar a y b
     }
     else if (c > a && a > b)
     {
-        printf("sa\n");  // Intercambiar a y b
-        printf("ra\n");  // Rotar a
+        swap_a(stack_a);  // Intercambiar a y b
+        rotate_a(stack_a);  // Rotar a
     }
 }
 
