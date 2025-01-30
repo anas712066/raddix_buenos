@@ -51,7 +51,7 @@ static int get_max_bits(int max_num)
     return bits;
 }
 
-static void rotate_a(t_list **stack_a)
+void rotate_a(t_list **stack_a)
 {
     if (*stack_a && (*stack_a)->next)
     {
@@ -59,11 +59,12 @@ static void rotate_a(t_list **stack_a)
         *stack_a = (*stack_a)->next;
         tmp->next = NULL;
         ft_lstadd_back(stack_a, tmp);
-        printf("ra\n");
+        ft_putstr_fd("ra\n", 1);
     }
 }
 
-static void reverse_rotate_a(t_list **stack_a)
+// Reverse rotate stack_a
+void reverse_rotate_a(t_list **stack_a)
 {
     if (*stack_a && (*stack_a)->next)
     {
@@ -76,11 +77,12 @@ static void reverse_rotate_a(t_list **stack_a)
         tmp->next = NULL;
         last->next = *stack_a;
         *stack_a = last;
-        printf("rra\n");
+        ft_putstr_fd("rra\n", 1);
     }
 }
 
-static void push_b(t_list **stack_a, t_list **stack_b)
+// Push the top element of stack_a to stack_b
+void push_b(t_list **stack_a, t_list **stack_b)
 {
     if (*stack_a)
     {
@@ -88,11 +90,12 @@ static void push_b(t_list **stack_a, t_list **stack_b)
         *stack_a = (*stack_a)->next;
         tmp->next = *stack_b;
         *stack_b = tmp;
-        printf("pb\n");
+        ft_putstr_fd("pb\n", 1);
     }
 }
 
-static void push_a(t_list **stack_a, t_list **stack_b)
+// Push the top element of stack_b to stack_a
+void push_a(t_list **stack_a, t_list **stack_b)
 {
     if (*stack_b)
     {
@@ -100,90 +103,95 @@ static void push_a(t_list **stack_a, t_list **stack_b)
         *stack_b = (*stack_b)->next;
         tmp->next = *stack_a;
         *stack_a = tmp;
-        printf("pa\n");
+        ft_putstr_fd("pa\n", 1);
     }
 }
 
-void	sort_three(t_list **stack_a)
+// Sort a stack of size two
+static void sort_two(t_list **stack_a)
 {
-	int	a;
-	int	b;
-	int	c;
-
-	a = *(int *)(*stack_a)->content;
-	b = *(int *)(*stack_a)->next->content;
-	c = *(int *)(*stack_a)->next->next->content;
-	if (a > b && b > c)
-	{
-		swap_a(stack_a);
-		reverse_rotate_a(stack_a);
-	}
-	else if (a > c && c > b)
-		rotate_a(stack_a);
-	else if (b > a && a > c)
-		reverse_rotate_a(stack_a);
-	else if (b > c && c > a)
-		swap_a(stack_a);
-	else if (c > a && a > b)
-	{
-		swap_a(stack_a);
-		rotate_a(stack_a);
-	}
+    if (*(int *)(*stack_a)->content > *(int *)(*stack_a)->next->content)
+    {
+        swap_a(stack_a);
+    }
 }
 
-void sort_five(t_list **stack_a, t_list **stack_b)
+// Sort a stack of size three
+void sort_three(t_list **stack_a)
 {
+    int a = *(int *)(*stack_a)->content;
+    int b = *(int *)(*stack_a)->next->content;
+    int c = *(int *)(*stack_a)->next->next->content;
+
+    if (a > b && b > c)
+    {
+        swap_a(stack_a);
+        reverse_rotate_a(stack_a);
+    }
+    else if (a > c && c > b)
+    {
+        rotate_a(stack_a);
+    }
+    else if (b > a && a > c)
+    {
+        reverse_rotate_a(stack_a);
+    }
+    else if (b > c && c > a)
+    {
+        swap_a(stack_a);
+    }
+    else if (c > a && a > b)
+    {
+        swap_a(stack_a);
+        rotate_a(stack_a);
+    }
+}
+
+// Sort a stack of size five
+void sort_five(t_list **stack_a)
+{
+    t_list *stack_b = NULL;
     int smallest = smallest_number(*stack_a);
     int second_smallest = second_smallest_number(*stack_a, smallest);
 
-    // Push the two smallest numbers to stack_b
-    while (ft_lstsize(*stack_a) > 3)
-    {
-        if (*(int *)(*stack_a)->content == smallest || *(int *)(*stack_a)->content == second_smallest)
-            push_b(stack_a, stack_b);
-        else
-            rotate_a(stack_a);
-    }
-
-    // Sort the remaining three numbers in stack_a
+    while (*(int *)(*stack_a)->content != smallest)
+        rotate_a(stack_a);
+    push_b(stack_a, &stack_b);
+    while (*(int *)(*stack_a)->content != second_smallest)
+        rotate_a(stack_a);
+    push_b(stack_a, &stack_b);
     sort_three(stack_a);
-
-    // Push the two smallest numbers back to stack_a
-    while (*stack_b)
-        push_a(stack_a, stack_b);
+    push_a(stack_a, &stack_b);
+    push_a(stack_a, &stack_b);
 }
 
-void	radix_sort(t_list **stack_a)
+// Sort a stack using radix sort
+void radix_sort(t_list **stack_a)
 {
-	t_list	*stack_b;
-	int		max_num;
-	int		max_bits;
-	int		i;
-	int		j;
-	int		size;
+    t_list *stack_b = NULL;
+    int max_num = get_max_num(*stack_a);
+    int max_bits = get_max_bits(max_num);
+    int i = 0;
 
-	stack_b = NULL;
-	max_num = get_max_num(*stack_a);
-	max_bits = get_max_bits(max_num);
-	i = 0;
-	while (i < max_bits)
-	{
-		j = 0;
-		size = ft_lstsize(*stack_a);
-		while (j < size)
-		{
-			if (((*(int *)(*stack_a)->content >> i) & 1) == 1)
-				rotate_a(stack_a);
-			else
-				push_b(stack_a, &stack_b);
-			j++;
-		}
-		while (stack_b)
-			push_a(stack_a, &stack_b);
-		i++;
-	}
+    while (i < max_bits)
+    {
+        int j = 0;
+        int size = ft_lstsize(*stack_a);
+        while (j < size)
+        {
+            if (((*(int *)(*stack_a)->content >> i) & 1) == 1)
+                rotate_a(stack_a);
+            else
+                push_b(stack_a, &stack_b);
+            j++;
+        }
+        while (stack_b)
+            push_a(stack_a, &stack_b);
+        i++;
+    }
 }
 
+// Sort the stack based on its size
 void sort_stack(t_list **stack_a)
 {
     int size = ft_lstsize(*stack_a);
