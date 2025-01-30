@@ -75,51 +75,19 @@ void free_arguments(char **args)
 t_list *parse_arguments(int argc, char **argv)
 {
     t_list *stack_a = NULL;
-    int num;
     int i = 1;
-    char **args;
 
-    if (argc == 2)
+    while (i < argc)
     {
-        args = split_arguments(argv[1]);
-    }
-    else
-    {
-        args = &argv[1];
-    }
-
-    i = 0;
-    while (args[i])
-    {
-        if (!is_valid_number(args[i]))
-            print_error_and_exit();
-        num = ft_atoi(args[i]);
-        if (has_duplicates(stack_a, num))
-            print_error_and_exit();
-        
-        // Asignación de memoria para el número
-        int *num_ptr = malloc(sizeof(int));
-        if (!num_ptr)
-            print_error_and_exit();
-        *num_ptr = num;
-        
-        // Creación de un nuevo nodo con el número
-        t_list *new_node = ft_lstnew(num_ptr);
+        int num = ft_atoi(argv[i]);
+        t_list *new_node = ft_lstnew(&num);
         if (!new_node)
         {
-            free(num_ptr);
-            print_error_and_exit();
+            ft_lstclear(&stack_a, free);
+            return (NULL);
         }
-        
-        // Adición del nodo al final de la lista
         ft_lstadd_back(&stack_a, new_node);
         i++;
     }
-
-    if (argc == 2)
-    {
-        free_arguments(args);
-    }
-
-    return stack_a;
+    return (stack_a);
 }
