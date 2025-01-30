@@ -14,7 +14,7 @@
 
 int main(int argc, char **argv)
 {
-    t_list *stack_a = NULL;
+    t_list *stack_a;
 
     if (argc < 2)
         return (0);
@@ -27,10 +27,12 @@ int main(int argc, char **argv)
         return (1);
     }
 
-    // Ordenar la pila
-    sort_stack(&stack_a);
+    // Ordenar solo si no está ordenado
+    if (!is_sorted(stack_a))
+        sort_stack(&stack_a);
 
-    // Liberar la memoria
+    // Liberar memoria al final
     ft_lstclear(&stack_a, free);
+
     return (0);
 }

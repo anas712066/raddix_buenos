@@ -60,6 +60,7 @@ t_list *parse_arguments(int argc, char **argv)
             ft_lstclear(&stack_a, free);
             print_error_and_exit();
         }
+
         int *num = malloc(sizeof(int));
         if (!num)
         {
@@ -67,6 +68,7 @@ t_list *parse_arguments(int argc, char **argv)
             print_error_and_exit();
         }
         *num = ft_atoi(argv[i]);
+
         t_list *new_node = ft_lstnew(num);
         if (!new_node)
         {
