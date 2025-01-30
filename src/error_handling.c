@@ -79,12 +79,17 @@ t_list *parse_arguments(int argc, char **argv)
 
     while (i < argc)
     {
+        if (!is_valid_number(argv[i]) || has_duplicates(stack_a, ft_atoi(argv[i])))
+        {
+            ft_lstclear(&stack_a, free);
+            print_error_and_exit();
+        }
         int num = ft_atoi(argv[i]);
         t_list *new_node = ft_lstnew(&num);
         if (!new_node)
         {
             ft_lstclear(&stack_a, free);
-            return (NULL);
+            print_error_and_exit();
         }
         ft_lstadd_back(&stack_a, new_node);
         i++;
