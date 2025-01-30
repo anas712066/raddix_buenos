@@ -48,36 +48,30 @@ int has_duplicates(t_list *head, int num)
     return 0;
 }
 
-t_list *parse_arguments(int argc, char **argv)
+t_list	*parse_arguments(int argc, char **argv)
 {
-    t_list *stack_a = NULL;
-    int i = 1;
+	t_list	*stack_a;
+	int		*num;
+	int		i;
 
-    while (i < argc)
-    {
-        if (!is_valid_number(argv[i]) || has_duplicates(stack_a, ft_atoi(argv[i])))
-        {
-            ft_lstclear(&stack_a, free);
-            print_error_and_exit();
-        }
-
-        int *num = malloc(sizeof(int));
-        if (!num)
-        {
-            ft_lstclear(&stack_a, free);
-            print_error_and_exit();
-        }
-        *num = ft_atoi(argv[i]);
-
-        t_list *new_node = ft_lstnew(num);
-        if (!new_node)
-        {
-            free(num);
-            ft_lstclear(&stack_a, free);
-            print_error_and_exit();
-        }
-        ft_lstadd_back(&stack_a, new_node);
-        i++;
-    }
-    return (stack_a);
+	stack_a = NULL;
+	i = 1;
+	while (i < argc)
+	{
+		if (!is_valid_number(argv[i]) || has_duplicates(stack_a, ft_atoi(argv[i])))
+		{
+			ft_lstclear(&stack_a, free);
+			print_error_and_exit();
+		}
+		num = malloc(sizeof(int));
+		if (!num)
+		{
+			ft_lstclear(&stack_a, free);
+			print_error_and_exit();
+		}
+		*num = ft_atoi(argv[i]);
+		ft_lstadd_back(&stack_a, ft_lstnew(num));
+		i++;
+	}
+	return (stack_a);
 }

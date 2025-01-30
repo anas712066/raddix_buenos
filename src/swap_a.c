@@ -12,16 +12,18 @@
 
 #include "../includes/push_swap.h"
 
-void swap_a(t_list **stack_a)
+void	swap_a(t_list **stack_a)
 {
-    if (*stack_a && (*stack_a)->next)
-    {
-        t_list *first = *stack_a;
-        t_list *second = (*stack_a)->next;
+	t_list	*first;
+	t_list	*second;
 
-        first->next = second->next;
-        second->next = first;
-        *stack_a = second;
-        printf("sa\n");
-    }
+	if (*stack_a && (*stack_a)->next)
+	{
+		first = *stack_a;
+		second = (*stack_a)->next;
+		first->next = second->next;
+		second->next = first;
+		*stack_a = second;
+		ft_putstr_fd("sa\n", 1);
+	}
 }

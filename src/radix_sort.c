@@ -104,85 +104,82 @@ static void push_a(t_list **stack_a, t_list **stack_b)
     }
 }
 
-void sort_three(t_list **stack_a)
+void	sort_three(t_list **stack_a)
 {
-    int a = *(int *)(*stack_a)->content;
-    int b = *(int *)(*stack_a)->next->content;
-    int c = *(int *)(*stack_a)->next->next->content;
+	int	a;
+	int	b;
+	int	c;
 
-    if (a > b && b > c)       // 3 2 1 → swap, rra
-    {
-        swap_a(stack_a);
-        reverse_rotate_a(stack_a);
-    }
-    else if (a > c && c > b)  // 3 1 2 → ra
-    {
-        rotate_a(stack_a);
-    }
-    else if (b > a && a > c)  // 2 3 1 → rra
-    {
-        reverse_rotate_a(stack_a);
-    }
-    else if (b > c && c > a)  // 2 1 3 → swap
-    {
-        swap_a(stack_a);
-    }
-    else if (c > a && a > b)  // 1 3 2 → swap, ra
-    {
-        swap_a(stack_a);
-        rotate_a(stack_a);
-    }
+	a = *(int *)(*stack_a)->content;
+	b = *(int *)(*stack_a)->next->content;
+	c = *(int *)(*stack_a)->next->next->content;
+	if (a > b && b > c)
+	{
+		swap_a(stack_a);
+		reverse_rotate_a(stack_a);
+	}
+	else if (a > c && c > b)
+		rotate_a(stack_a);
+	else if (b > a && a > c)
+		reverse_rotate_a(stack_a);
+	else if (b > c && c > a)
+		swap_a(stack_a);
+	else if (c > a && a > b)
+	{
+		swap_a(stack_a);
+		rotate_a(stack_a);
+	}
 }
 
-void sort_five(t_list **stack_a)
+void	sort_five(t_list **stack_a)
 {
-    t_list *stack_b = NULL;
-    int smallest, second_smallest;
-    
-    smallest = smallest_number(*stack_a);
-    second_smallest = second_smallest_number(*stack_a, smallest);
+	t_list	*stack_b;
+	int		smallest;
+	int		second_smallest;
 
-    // Mover el número más pequeño a B
-    while (*(int *)(*stack_a)->content != smallest)
-        rotate_a(stack_a);
-    push_b(stack_a, &stack_b);
-
-    // Mover el segundo número más pequeño a B
-    while (*(int *)(*stack_a)->content != second_smallest)
-        rotate_a(stack_a);
-    push_b(stack_a, &stack_b);
-
-    // Ordenar los tres números restantes
-    sort_three(stack_a);
-
-    // Regresar los números de B a A en orden correcto
-    push_a(stack_a, &stack_b);
-    push_a(stack_a, &stack_b);
+	stack_b = NULL;
+	smallest = smallest_number(*stack_a);
+	second_smallest = second_smallest_number(*stack_a, smallest);
+	while (*(int *)(*stack_a)->content != smallest)
+		rotate_a(stack_a);
+	push_b(stack_a, &stack_b);
+	while (*(int *)(*stack_a)->content != second_smallest)
+		rotate_a(stack_a);
+	push_b(stack_a, &stack_b);
+	sort_three(stack_a);
+	push_a(stack_a, &stack_b);
+	push_a(stack_a, &stack_b);
 }
 
-void radix_sort(t_list **stack_a)
+void	radix_sort(t_list **stack_a)
 {
-    t_list *stack_b = NULL;
-    int max_num = get_max_num(*stack_a);
-    int max_bits = get_max_bits(max_num);
-    int i, j, size;
+	t_list	*stack_b;
+	int		max_num;
+	int		max_bits;
+	int		i;
+	int		j;
+	int		size;
 
-    size = ft_lstsize(*stack_a);
-    for (i = 0; i < max_bits; i++)
-    {
-        j = 0;
-        int original_size = ft_lstsize(*stack_a);
-        while (j < original_size)
-        {
-            if (((*(int *)(*stack_a)->content >> i) & 1) == 1)
-                rotate_a(stack_a);
-            else
-                push_b(stack_a, &stack_b);
-            j++;
-        }
-        while (stack_b)
-            push_a(stack_a, &stack_b);
-    }
+	stack_b = NULL;
+	max_num = get_max_num(*stack_a);
+	max_bits = get_max_bits(max_num);
+	i = 0;
+	while (i < max_bits)
+	{
+		j = 0;
+		size = ft_lstsize(*stack_a);
+		while (j < size)
+		{
+			if (((*(int *)(*stack_a)->content >> i) & 1) == 1)
+				rotate_a(stack_a);
+			else
+				push_b(stack_a, &stack_b);
+			j++;
+		}
+		while (stack_b)
+			push_a(stack_a, &stack_b);
+		i++;
+	}
 }
 
 void sort_stack(t_list **stack_a)
