@@ -6,7 +6,7 @@ int smallest_number(t_list *stack)
     int smallest;
     
     if (stack == NULL)
-        return (0); // Devuelve 0 si la lista está vacía
+        return (0);
     
     smallest = *(int *)(stack->content);
     stack = stack->next;

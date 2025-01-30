@@ -117,7 +117,7 @@ static void sort_two(t_list **stack_a)
 }
 
 // Sort a stack of size three
-void sort_three(t_list **stack_a)
+static void sort_three(t_list **stack_a)
 {
     int a = *(int *)(*stack_a)->content;
     int b = *(int *)(*stack_a)->next->content;
@@ -154,19 +154,32 @@ void sort_five(t_list **stack_a)
     int smallest = smallest_number(*stack_a);
     int second_smallest = second_smallest_number(*stack_a, smallest);
 
-    while (*(int *)(*stack_a)->content != smallest)
-        rotate_a(stack_a);
-    push_b(stack_a, &stack_b);
-    while (*(int *)(*stack_a)->content != second_smallest)
-        rotate_a(stack_a);
-    push_b(stack_a, &stack_b);
+    while (ft_lstsize(*stack_a) > 3)
+    {
+        if (*(int *)(*stack_a)->content == smallest || *(int *)(*stack_a)->content == second_smallest)
+        {
+            push_b(stack_a, &stack_b);
+        }
+        else
+        {
+            rotate_a(stack_a);
+        }
+    }
     sort_three(stack_a);
     push_a(stack_a, &stack_b);
-    push_a(stack_a, &stack_b);
+    if (*(int *)(stack_b->content) == smallest)
+    {
+        push_a(stack_a, &stack_b);
+    }
+    else
+    {
+        push_a(stack_a, &stack_b);
+        rotate_a(stack_a);
+    }
 }
 
 // Sort a stack using radix sort
-void radix_sort(t_list **stack_a)
+static void radix_sort(t_list **stack_a)
 {
     t_list *stack_b = NULL;
     int max_num = get_max_num(*stack_a);
