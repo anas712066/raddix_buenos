@@ -142,17 +142,22 @@ void sort_five(t_list **stack_a)
     smallest = smallest_number(*stack_a);
     second_smallest = second_smallest_number(*stack_a, smallest);
 
+    // Mover el número más pequeño a B
     while (*(int *)(*stack_a)->content != smallest)
-        rotate_a(stack_a);
-    push_b(stack_a, &stack_b);
+        rotate_a(stack_a); // 1 movimiento por cada rotación
+    push_b(stack_a, &stack_b); // pb (1 movimiento)
 
+    // Mover el segundo número más pequeño a B
     while (*(int *)(*stack_a)->content != second_smallest)
-        rotate_a(stack_a);
-    push_b(stack_a, &stack_b);
+        rotate_a(stack_a); // 1 movimiento por cada rotación
+    push_b(stack_a, &stack_b); // pb (1 movimiento)
 
+    // Ordenar los tres números restantes
     sort_three(stack_a);
-    push_a(stack_a, &stack_b);
-    push_a(stack_a, &stack_b);
+
+    // Regresar los números de B a A
+    push_a(stack_a, &stack_b); // pa (1 movimiento)
+    push_a(stack_a, &stack_b); // pa (1 movimiento)
 }
 
 void radix_sort(t_list **stack_a)
