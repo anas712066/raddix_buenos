@@ -134,61 +134,39 @@ static void sort_three(t_list **stack_a)
     }
 }
 
-static void sort_five(t_list **stack_a)
+void sort_five(t_list **stack_a)
 {
     t_list *stack_b = NULL;
     int smallest, second_smallest;
-    int size = ft_lstsize(*stack_a);
-    int i = 0;
-
-    // Verifica si la pila ya está ordenada
-    if (is_sorted(*stack_a))
-        return;
-
-    // Encuentra el número más pequeño y el segundo más pequeño
+    
     smallest = smallest_number(*stack_a);
     second_smallest = second_smallest_number(*stack_a, smallest);
 
-    // Mover el número más pequeño a la pila B
     while (*(int *)(*stack_a)->content != smallest)
-    {
-        if (i++ < size / 2)
-            rotate_a(stack_a);  // Rotar a
-        else
-            reverse_rotate_a(stack_a);  // Rotar inversamente a
-    }
-    push_b(stack_a, &stack_b);  // Mover el más pequeño a B
+        rotate_a(stack_a);
+    push_b(stack_a, &stack_b);
 
-    // Mover el segundo número más pequeño a la pila B
-    i = 0;
     while (*(int *)(*stack_a)->content != second_smallest)
-    {
-        if (i++ < size / 2)
-            rotate_a(stack_a);  // Rotar a
-        else
-            reverse_rotate_a(stack_a);  // Rotar inversamente a
-    }
-    push_b(stack_a, &stack_b);  // Mover el segundo más pequeño a B
+        rotate_a(stack_a);
+    push_b(stack_a, &stack_b);
 
-    // Ordenar los tres elementos restantes en la pila A
     sort_three(stack_a);
-
-    // Restaurar los dos elementos de la pila B a la pila A
     push_a(stack_a, &stack_b);
     push_a(stack_a, &stack_b);
 }
 
-static void radix_sort(t_list **stack_a)
+void radix_sort(t_list **stack_a)
 {
     t_list *stack_b = NULL;
     int max_num = get_max_num(*stack_a);
     int max_bits = get_max_bits(max_num);
-    int i = 0;
+    int i, j, size;
 
-    while (i < max_bits)
+    size = ft_lstsize(*stack_a);
+    for (i = 0; i < max_bits; i++)
     {
-        int j = 0;
-        while (j < ft_lstsize(*stack_a))
+        j = 0;
+        while (j < size)
         {
             if (((*(int *)(*stack_a)->content >> i) & 1) == 1)
                 rotate_a(stack_a);
@@ -196,35 +174,24 @@ static void radix_sort(t_list **stack_a)
                 push_b(stack_a, &stack_b);
             j++;
         }
-
         while (stack_b)
             push_a(stack_a, &stack_b);
-
-        i++;
     }
 }
 
 void sort_stack(t_list **stack_a)
 {
+    int size = ft_lstsize(*stack_a);
+
     if (is_sorted(*stack_a))
         return;
 
-    int size = ft_lstsize(*stack_a);
-
     if (size == 2)
-    {
         sort_two(stack_a);
-    }
     else if (size == 3)
-    {
         sort_three(stack_a);
-    }
     else if (size == 5)
-    {
         sort_five(stack_a);
-    }
     else
-    {
         radix_sort(stack_a);
-    }
 }

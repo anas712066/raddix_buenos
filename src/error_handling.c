@@ -18,7 +18,6 @@ void print_error_and_exit(void)
     exit(EXIT_FAILURE);
 }
 
-// Función para validar si una cadena es un número válido
 int is_valid_number(char *str)
 {
     int i = 0;
@@ -38,7 +37,6 @@ int is_valid_number(char *str)
     return 1;
 }
 
-// Función para verificar duplicados en la lista
 int has_duplicates(t_list *head, int num)
 {
     while (head)
@@ -50,28 +48,6 @@ int has_duplicates(t_list *head, int num)
     return 0;
 }
 
-// Función para dividir una cadena en múltiples argumentos
-char **split_arguments(char *str)
-{
-    char **args = ft_split(str, ' ');
-    if (!args)
-        print_error_and_exit();
-    return args;
-}
-
-// Función para liberar la memoria de una matriz de cadenas
-void free_arguments(char **args)
-{
-    int i = 0;
-    while (args[i])
-    {
-        free(args[i]);
-        i++;
-    }
-    free(args);
-}
-
-// Función para analizar y validar los argumentos
 t_list *parse_arguments(int argc, char **argv)
 {
     t_list *stack_a = NULL;
@@ -84,10 +60,17 @@ t_list *parse_arguments(int argc, char **argv)
             ft_lstclear(&stack_a, free);
             print_error_and_exit();
         }
-        int num = ft_atoi(argv[i]);
-        t_list *new_node = ft_lstnew(&num);
+        int *num = malloc(sizeof(int));
+        if (!num)
+        {
+            ft_lstclear(&stack_a, free);
+            print_error_and_exit();
+        }
+        *num = ft_atoi(argv[i]);
+        t_list *new_node = ft_lstnew(num);
         if (!new_node)
         {
+            free(num);
             ft_lstclear(&stack_a, free);
             print_error_and_exit();
         }
