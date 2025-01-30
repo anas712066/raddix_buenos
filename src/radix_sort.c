@@ -13,8 +13,6 @@
 #include "../includes/push_swap.h"
 #include <stdio.h>
 
-
-// Función para ordenar listas de tamaño 3
 static int get_max_num(t_list *stack)
 {
     int max = INT_MIN;
@@ -49,7 +47,6 @@ void rotate_a(t_list **stack_a)
     }
 }
 
-// Reverse rotate stack_a
 void reverse_rotate_a(t_list **stack_a)
 {
     if (*stack_a && (*stack_a)->next)
@@ -67,7 +64,6 @@ void reverse_rotate_a(t_list **stack_a)
     }
 }
 
-// Push the top element of stack_a to stack_b
 void push_b(t_list **stack_a, t_list **stack_b)
 {
     if (*stack_a)
@@ -80,7 +76,6 @@ void push_b(t_list **stack_a, t_list **stack_b)
     }
 }
 
-// Push the top element of stack_b to stack_a
 void push_a(t_list **stack_a, t_list **stack_b)
 {
     if (*stack_b)
@@ -93,7 +88,6 @@ void push_a(t_list **stack_a, t_list **stack_b)
     }
 }
 
-// Sort a stack of size two
 static void sort_two(t_list **stack_a)
 {
     if (*(int *)(*stack_a)->content > *(int *)(*stack_a)->next->content)
@@ -102,7 +96,6 @@ static void sort_two(t_list **stack_a)
     }
 }
 
-// Sort a stack of size three
 static void sort_three(t_list **stack_a)
 {
     int a = *(int *)(*stack_a)->content;
@@ -133,7 +126,6 @@ static void sort_three(t_list **stack_a)
     }
 }
 
-// Sort a stack of size five
 void sort_five(t_list **stack_a)
 {
     t_list *stack_b = NULL;
@@ -164,7 +156,6 @@ void sort_five(t_list **stack_a)
     }
 }
 
-// Sort a stack using radix sort
 static void radix_sort(t_list **stack_a)
 {
     t_list *stack_b = NULL;
@@ -190,7 +181,6 @@ static void radix_sort(t_list **stack_a)
     }
 }
 
-// Sort the stack based on its size
 void sort_stack(t_list **stack_a)
 {
     int size = ft_lstsize(*stack_a);
